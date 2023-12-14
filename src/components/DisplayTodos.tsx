@@ -5,14 +5,15 @@ import { MdDone } from "react-icons/md";
 interface Props {
   todos: Todo[];
   handleDelete: (id: number) => void;
-  handleCompleted: (id: number) => void;
+  handleCompleted: (id: number , todo:Todo) => void;
   editTodo: boolean;
   newTodo:string,
   setNewTodo:React.Dispatch<React.SetStateAction<string>>
   handleSubmitNewTodo:(e:React.FormEvent, id:number)=>void
   handleEditButtonClick:(id:number)=>void,
   setEditTodoId:React.Dispatch<React.SetStateAction<number | null>>,
-  editTodoId:number| null
+  editTodoId:number| null,
+  completedTasks:Todo[]
 }
 const DisplayTodos: React.FC<Props> = ({
   handleEditButtonClick,
@@ -21,15 +22,21 @@ const DisplayTodos: React.FC<Props> = ({
   todos,
   handleDelete,
   newTodo,
+  completedTasks,
   setNewTodo,
   handleCompleted,
 }) => {
   return (
-    <div>
+    <div className="flex flex-row  justify-between pr-[10%] mt-[2%] ">
+     
+      <div className="pl-[2%]">
+      <h1 className="text-[30px]">Un completed todos</h1>
+
+   
       {todos.map((t) => (
         <div
           key={t.id}
-          className="bg-yellow-500 flex flex-row rounded-lg mt-[1em] ml-[1em] pl-[1em]  justify-evenly items-center py-[1em] w-fit pr-[3em]"
+          className="bg-yellow-500 flex flex-row rounded-lg mt-[1em]  pl-[1em]  justify-evenly items-center py-[1em] w-fit pr-[3em]"
         >
           {editTodoId ===t.id ? (
             <form onSubmit={(e)=>handleSubmitNewTodo(e,t.id)}>
@@ -52,10 +59,21 @@ const DisplayTodos: React.FC<Props> = ({
           />
           <MdDone
             className="mr-[1em] ml-[0.5em] text-[25px]"
-            onClick={() => handleCompleted(t.id)}
+            onClick={() => handleCompleted(t.id,t)}
           />
+          
         </div>
       ))}
+         </div>
+         <div>
+         <h1 className="text-[30px]">Completed todos</h1> 
+         {completedTasks && completedTasks.map(data=>(
+          <div key={data.id} className="bg-yellow-500 flex flex-row rounded-lg mt-[1em]  pl-[1em]  justify-evenly items-center py-[1em] w-fit pr-[3em]"
+          >
+            <span>{data.todo}</span>
+          </div>
+         ))}
+      </div>
     </div>
   );
 };

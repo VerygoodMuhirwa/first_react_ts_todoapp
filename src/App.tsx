@@ -62,7 +62,8 @@ function App() {
   const [editTodo, setEditTodo] = useState<boolean>(false);
   const [newTodo, setNewTodo] = useState<string>("");
   const [editTodoId, setEditTodoId] = useState<number | null>(null);
-  const handleAdd = (e: React.FormEvent) => {
+  const [completedTasks, setCompletedTasks] = useState<Todo[] >([])
+  const handleAdd = (e: React.FormEvent) => { 
     e.preventDefault();
     if (todo) {
       setTodos([...todos, { id: Date.now(), todo: todo, isCompleted: false }]);
@@ -75,13 +76,35 @@ function App() {
     setTodos(updatedTodos);
   };
 
-  const handleCompleted = (id: number) => {
-    setTodos(
-      todos.map((data) =>
+  const handleCompleted = (id: number, todoToUpdate: Todo) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((data) =>
         data.id === id ? { ...data, isCompleted: !data.isCompleted } : data
       )
     );
+  
+    setCompletedTasks((prevCompletedTasks) => {
+      const updatedTask = {
+        id: todoToUpdate.id,
+        isCompleted: !todoToUpdate.isCompleted,
+        todo: todoToUpdate.todo,
+      };
+  
+      const isTaskAlreadyCompleted = prevCompletedTasks.some(
+        (task) => task.id === updatedTask.id
+      );
+  
+      return isTaskAlreadyCompleted
+        ? prevCompletedTasks.map((task) =>
+            task.id === updatedTask.id ? updatedTask : task
+          )
+        : [...prevCompletedTasks, updatedTask];
+    });
+
+
+    
   };
+  
 
   const handleEditButtonClick = (id: number) => {
     setEditTodo(!editTodo);
@@ -111,6 +134,7 @@ function App() {
         setNewTodo={setNewTodo}
         handleSubmitNewTodo={handleSubmitNewTodo}
         handleEditButtonClick={handleEditButtonClick}
+        completedTasks={completedTasks}
       />
     </div>
   );
