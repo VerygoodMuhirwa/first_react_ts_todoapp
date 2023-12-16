@@ -70,7 +70,7 @@ const DisplayTodos: React.FC<Props> = ({
          {completedTasks && completedTasks.map(data=>(
           <div key={data.id} className="bg-yellow-500 flex flex-row rounded-lg mt-[1em]  pl-[1em]  justify-evenly items-center py-[1em] w-fit pr-[3em]"
           >
-            <span>{data.todo}</span>
+            <span className="text-[25px]">{data.todo}</span>
           </div>
          ))}
       </div>

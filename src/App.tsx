@@ -83,6 +83,8 @@ function App() {
       )
     );
   
+   
+   
     setCompletedTasks((prevCompletedTasks) => {
       const updatedTask = {
         id: todoToUpdate.id,
@@ -100,8 +102,12 @@ function App() {
           )
         : [...prevCompletedTasks, updatedTask];
     });
-
-
+ 
+   if(todoToUpdate.isCompleted=== true){
+    setCompletedTasks((prevCompletedTasks) => {
+      return prevCompletedTasks.filter((task) => task.id!== todoToUpdate.id);
+    });
+   }
     
   };
   
